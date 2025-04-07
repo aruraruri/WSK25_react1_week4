@@ -28,6 +28,8 @@ const SingleView = (props) => {
     <>
     {item && (
       <dialog open>
+        {item.media_type.includes('video') ? <video src={item.filename} controls/> : <img src={item.filename} alt={item.title} />}
+        <button onClick={() => setSelectedItem(null)}>&#10006;</button>
         <img src={item.filename} alt={item.title} />
         <h2>{item.title}</h2>
         <p>{item.description}</p>
