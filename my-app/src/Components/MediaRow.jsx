@@ -10,7 +10,6 @@ const handleClick = () => {
 }
   return (
     <>
-
           <tr key={item.media_id}>
             <td>{item.media_id}</td>
             <td>{item.user_id}</td>
