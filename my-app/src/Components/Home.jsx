@@ -1,5 +1,6 @@
 import React from 'react'
 import MediaRow from './MediaRow';
+import { useState } from 'react';
 
 const mediaArray = [
   {
@@ -39,6 +40,9 @@ const mediaArray = [
 ];
 
 function Home() {
+  const [selectedItem, setSelectedItem] = useState(null);
+  console.log('Selected item:', selectedItem);
+  // make a table with the mediaArray
   return (
     <>
     <div>Home</div>
@@ -55,12 +59,13 @@ function Home() {
             <th>Title</th>
             <th>Description</th>
             <th>Created At</th>
+            <th>Show/Hide</th>
           </tr>
         </thead>
 
     <tbody>
       {mediaArray.map((item) => (
-        <MediaRow key={item.media_id} item={item} />
+        <MediaRow key={item.media_id} item={item} setSelectedItem={setSelectedItem} />
       ))}
     </tbody>
     </table>
