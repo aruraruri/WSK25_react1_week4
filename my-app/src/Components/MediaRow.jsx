@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 
 const MediaRow = (props) => {
   const {item, setSelectedItem} = props;
+
+const handleClick = () => {
+  setSelectedItem(item);
+  // Handle the click event here
+}
   return (
     <>
 
@@ -16,7 +21,7 @@ const MediaRow = (props) => {
             <td>{item.title}</td>
             <td>{item.description}</td>
             <td>{new Date(item.created_at).toLocaleString()}</td>
-            <td><button onClick={() => setSelectedItem(item)}>View</button></td>
+            <td><button onClick={handleClick}>View</button></td>
           </tr>
 
       </>
