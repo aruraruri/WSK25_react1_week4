@@ -43,11 +43,27 @@ function Home() {
     <>
     <div>Home</div>
 
+    <table>
+        <thead>
+          <tr>
+            <th>Media ID</th>
+            <th>User ID</th>
+            <th>Filename</th>
+            <th>Thumbnail</th>
+            <th>Filesize</th>
+            <th>Media Type</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+
     <tbody>
       {mediaArray.map((item) => (
         <MediaRow key={item.media_id} item={item} />
       ))}
     </tbody>
+    </table>
     </>
   )
 }

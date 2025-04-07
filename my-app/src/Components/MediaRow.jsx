@@ -6,38 +6,18 @@ const MediaRow = (props) => {
   return (
     <>
 
-<h1>Media List</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Media ID</th>
-            <th>User ID</th>
-            <th>Filename</th>
-            <th>Thumbnail</th>
-            <th>Filesize</th>
-            <th>Media Type</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Created At</th>
+          <tr key={item.media_id}>
+            <td>{item.media_id}</td>
+            <td>{item.user_id}</td>
+            <td>{item.filename}</td>
+            <td><img src={item.thumbnail}/></td>
+            <td>{item.filesize}</td>
+            <td>{item.media_type}</td>
+            <td>{item.title}</td>
+            <td>{item.description}</td>
+            <td>{new Date(item.created_at).toLocaleString()}</td>
           </tr>
-        </thead>
 
-      <tbody>
-        {item.map((media) => (
-          <tr key={media.media_id}>
-            <td>{media.media_id}</td>
-            <td>{media.user_id}</td>
-            <td>{media.filename}</td>
-            <td><img src={media.thumbnail}/></td>
-            <td>{media.filesize}</td>
-            <td>{media.media_type}</td>
-            <td>{media.title}</td>
-            <td>{media.description}</td>
-            <td>{new Date(media.created_at).toLocaleString()}</td>
-          </tr>
-        ))}
-      </tbody>
-      </table>
       </>
   );
 };
