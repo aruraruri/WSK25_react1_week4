@@ -11,7 +11,7 @@ function App() {
   // make a table with the mediaArray
   return (
     <>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/profile" element={<Profile />} />
