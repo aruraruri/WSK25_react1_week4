@@ -1,5 +1,6 @@
 // src/components/MediaRow.jsx
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const MediaRow = (props) => {
   const {item, setSelectedItem} = props;
@@ -20,7 +21,8 @@ const handleClick = () => {
             <td>{item.title}</td>
             <td>{item.description}</td>
             <td>{new Date(item.created_at).toLocaleString()}</td>
-            <td><button onClick={handleClick}>View</button></td>
+            {/*<td><button onClick={handleClick}>View</button></td>*/}
+            <td><Link to="/single" state={{item}}>Single view</Link></td>
           </tr>
 
       </>
