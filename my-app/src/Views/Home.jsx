@@ -14,8 +14,18 @@ function Home() {
   useEffect(() => {
     const getMedia = async () => {
       try {
-        const data = await fetchData(import.meta.env.VITE_MEDIA_API + '/media');
-        setMediaArray(data);
+        const mediaData = await fetchData(import.meta.env.VITE_MEDIA_API + '/media');
+
+        const url = import.meta.env.VITE_AUTH_API;
+        const newData = await Promise.all(mediaData.map(async (item) => {
+          const data = await fetchData(`${url}/users/${item.user_id}`);
+
+          return {...item, username: data.username};
+        }))
+        console.log(newData);
+
+        setMediaArray(newData);
+
       } catch (error) {
         console.error('Error fetching media:', error);
       }
@@ -42,6 +52,7 @@ function Home() {
             <th>Media Type</th>
             <th>Title</th>
             <th>Description</th>
+            <th>Owner</th>
             <th>Created At</th>
             <th>Show/Hide</th>
           </tr>
