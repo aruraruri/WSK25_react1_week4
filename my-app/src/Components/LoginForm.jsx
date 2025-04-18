@@ -1,21 +1,45 @@
 import useForm from "../hooks/useForm";
+import { useAuthentication } from "../hooks/apiHooks";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const { postLogin } = useAuthentication();
+  const navigate = useNavigate();
+
   const initValues = {
     username: '',
     password: '',
   };
 
-  const doLogin = () => {
-    console.log(inputs);
-    // TODO: add login functionalities here
+  const doLogin = async () => {
+    // The inputs are already available in the closure
+    try {
+      const result = await postLogin(inputs);
+      console.log(inputs);
+      console.log(result)
+      console.log('token:', result.token);
+
+      // Save token to localStorage
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        console.log('Token saved to localStorage');
+        
+        // Optional: Redirect after successful login
+        navigate('/'); // Redirect to home page or dashboard
+      }
+
+    } catch (error) {
+      console.log('Error during login:', error);
+    }
+
   };
 
-  const {inputs, handleInputChange, handleSubmit} = useForm(doLogin, initValues);
+  const { inputs, handleInputChange, handleSubmit } = useForm(doLogin, initValues);
 
   return (
     <>
       <h1>Login</h1>
+      {/* Remove the parentheses - just pass the function reference */}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="loginuser">Username</label>
