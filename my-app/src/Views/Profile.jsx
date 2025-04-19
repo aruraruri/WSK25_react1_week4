@@ -1,12 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import UserProfile from '../Components/UserProfile';
 
-const Profile = props => {
+const Profile = () => {
   return (
-    <div>Profile</div>
+    <UserProfile />
   )
 }
-
-Profile.propTypes = {}
 
 export default Profile

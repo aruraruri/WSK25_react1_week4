@@ -71,3 +71,24 @@ export const useAuthentication = () => {
   };
   return {postLogin};
 };
+
+export function useUser() {
+  async function getUserByToken() {
+    try {
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      };
+      return await fetchData(
+        import.meta.env.VITE_AUTH_API + '/users/token',
+        fetchOptions,
+      );
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+  return {getUserByToken};
+}
