@@ -90,5 +90,22 @@ export function useUser() {
       console.error('error', error);
     }
   }
-  return {getUserByToken};
+
+  async function postUser(inputs) {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
+    };
+    const postResults = await fetchData(
+      import.meta.env.VITE_AUTH_API + '/users',
+      fetchOptions,
+    );
+    console.log('post result: ', postResults);
+
+    return postResults;
+  }
+  return {getUserByToken, postUser};
 }
