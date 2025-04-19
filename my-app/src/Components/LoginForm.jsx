@@ -23,8 +23,7 @@ const LoginForm = () => {
       if (result.token) {
         localStorage.setItem('token', result.token);
         console.log('Token saved to localStorage');
-        
-        // Optional: Redirect after successful login
+
         navigate('/'); // Redirect to home page or dashboard
       }
 
@@ -39,7 +38,6 @@ const LoginForm = () => {
   return (
     <>
       <h1>Login</h1>
-      {/* Remove the parentheses - just pass the function reference */}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="loginuser">Username</label>
