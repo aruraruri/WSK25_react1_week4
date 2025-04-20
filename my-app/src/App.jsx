@@ -10,6 +10,7 @@ import {Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import Layout from './Components/Layout';
 // App.jsx
 import { UserProvider } from './contexts/UserContext';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 
 function App() {
@@ -20,7 +21,12 @@ function App() {
       <UserProvider>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+                }
+              />
             <Route path="/upload" element={<Upload />} />
             <Route path="/single" element={<Single />} />
             <Route path="/login" element={<Login/>}/>
