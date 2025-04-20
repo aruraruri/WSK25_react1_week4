@@ -5,5 +5,5 @@ import react from '@vitejs/plugin-react-swc';
 // trailing slash is important for the base path to work correctly
 export default defineConfig({
   plugins: [react()],
-  base: '/~aurila/WSK25/week5/forms/',
+  base: '/~aurila/WSK25/week5/context/',
 });
