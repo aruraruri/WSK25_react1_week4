@@ -1,10 +1,9 @@
 import useForm from "../hooks/useForm";
-import { useAuthentication } from "../hooks/apiHooks";
-import { useNavigate } from "react-router-dom";
+
+import { useUserContext } from '../hooks/contextHooks';
 
 const LoginForm = () => {
-  const { postLogin } = useAuthentication();
-  const navigate = useNavigate();
+  const { handleLogin } = useUserContext();
 
   const initValues = {
     username: '',
@@ -12,26 +11,12 @@ const LoginForm = () => {
   };
 
   const doLogin = async () => {
-    // The inputs are already available in the closure
     try {
-      const result = await postLogin(inputs);
-      console.log(inputs);
-      console.log(result)
-      console.log('token:', result.token);
-
-      // Save token to localStorage
-      if (result.token) {
-        localStorage.setItem('token', result.token);
-        console.log('Token saved to localStorage');
-
-        navigate('/'); // Redirect to home page or dashboard
-      }
-
-    } catch (error) {
-      console.log('Error during login:', error);
+        handleLogin(inputs);
+    } catch (e) {
+        alert(e.message);
     }
-
-  };
+};
 
   const { inputs, handleInputChange, handleSubmit } = useForm(doLogin, initValues);
 
