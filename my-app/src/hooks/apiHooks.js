@@ -69,9 +69,16 @@ const useMedia = () => {
   return {mediaArray, postMedia};
 };
 
+// token check from local storage, returns boolean
+const tokenInLocalStorage = () => {
+  Boolean(localStorage.getItem('token'));
+};
+
 // make a table with the mediaArray
 
 const useAuthentication = () => {
+  let [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const postLogin = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -86,9 +93,11 @@ const useAuthentication = () => {
     );
     //console.log('loginResult', loginResult);
 
+    setIsLoggedIn(tokenInLocalStorage());
+
     return loginResult;
   };
-  return {postLogin};
+  return {postLogin, isLoggedIn};
 };
 
 function useUser() {

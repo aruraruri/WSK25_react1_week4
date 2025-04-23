@@ -11,11 +11,11 @@ function Home() {
 
   return (
     <>
-    <div>Home</div>
+    <h2 className="text-2xl my-4 font-mono ali">My Media</h2>
 
     <table>
         <thead>
-          <tr>
+          <tr className="*:p4 *:border-2 *:border-orange-600 *:my-2 *:rounded-lg">
             <th>Media ID</th>
             <th>User ID</th>
             <th>Filename</th>

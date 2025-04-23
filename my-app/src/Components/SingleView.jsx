@@ -34,7 +34,7 @@ const SingleView = (props) => {
 
     <>
     {item && (
-      <dialog open>
+      <dialog className="fixed top-[5%] h-[90%] overflow-auto z-[-9999]" open>
         {item.media_type.includes('video') ? <video src={item.filename} controls/> : <img src={item.filename} alt={item.title} />}
         <button onClick={handleClick}>&#10005;</button>
         <img src={item.filename} alt={item.title} />
