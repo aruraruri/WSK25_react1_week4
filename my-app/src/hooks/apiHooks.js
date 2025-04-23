@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {fetchData} from '../Utils/fetchData';
 
 // TODO: add necessary imports
-export const useMedia = () => {
+const useMedia = () => {
   // TODO: move mediaArray state here
   // TODO: move getMedia function here
   // TODO: move useEffect here
@@ -45,14 +45,33 @@ export const useMedia = () => {
     getMedia();
   }, []);
 
+  const postMedia = async (file, inputs, token) => {
+    const data = {
+      ...inputs,
+      ...file,
+    };
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer: ' + token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return await fetchData(
+      `${import.meta.env.VITE_MEDIA_API}/media`,
+      fetchOptions,
+    );
+  };
+
   console.log('media array:', mediaArray);
 
-  return {mediaArray};
+  return {mediaArray, postMedia};
 };
 
 // make a table with the mediaArray
 
-export const useAuthentication = () => {
+const useAuthentication = () => {
   const postLogin = async (inputs) => {
     const fetchOptions = {
       method: 'POST',
@@ -72,7 +91,7 @@ export const useAuthentication = () => {
   return {postLogin};
 };
 
-export function useUser() {
+function useUser() {
   async function getUserByToken() {
     try {
       const fetchOptions = {
@@ -109,3 +128,29 @@ export function useUser() {
   }
   return {getUserByToken, postUser};
 }
+
+const useFile = () => {
+  const postFile = async (file, token) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    console.log('formData', formData);
+
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer: ' + token,
+      },
+      mode: 'cors',
+      body: formData,
+    };
+
+    const uploadResult = await fetchData(
+      import.meta.env.VITE_UPLOAD_SERVER + '/upload',
+      fetchOptions,
+    );
+    return uploadResult;
+  };
+  return {postFile};
+};
+
+export {useMedia, useAuthentication, useUser, useFile};
