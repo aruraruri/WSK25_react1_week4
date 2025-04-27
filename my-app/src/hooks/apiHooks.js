@@ -4,6 +4,9 @@ import {mediaAPI} from './media';
 import {useMediaContext} from '../contexts/MediaConstext';
 import {useNavigate} from 'react-router-dom';
 
+const authApiUrl = import.meta.env.VITE_AUTH_API;
+const mediaApiUrl = import.meta.env.VITE_MEDIA_API;
+
 export const useMediaActions = () => {
   const navigate = useNavigate();
   const {updateMedia} = useMediaContext();
@@ -81,48 +84,51 @@ const useMedia = () => {
   }, []);
 
   const postMedia = async (file, inputs, token) => {
-    // Create FormData instead of JSON
-    const formData = new FormData();
-
-    // Append the file
-    formData.append('file', file);
-
-    // Append other inputs
-    Object.entries(inputs).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
+    const data = {
+      ...inputs,
+      ...file,
+    };
     const fetchOptions = {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer ' + token, // Fixed: space after Bearer
-        // DON'T set Content-Type - let browser set it with boundary
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: formData, // Use FormData instead of JSON
+      body: JSON.stringify(data),
     };
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_MEDIA_API}/media`,
-        fetchOptions,
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Upload failed:', error);
-      throw error;
-    }
+    return await fetchData(`${mediaApiUrl}/media`, fetchOptions);
   };
 
-  console.log('media array:', mediaArray);
+  const modifyMedia = async (inputs, token) => {
+    const fetchOptions = {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(inputs),
+    };
 
-  return {mediaArray, postMedia};
+    return await fetchData(`${mediaApiUrl}/media/${inputs.id}`, fetchOptions);
+  };
+
+  const deleteMedia = async (id, token) => {
+    const fetchOptions = {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer: ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    console.log(mediaApiUrl + '/media/' + id);
+
+    return await fetchData(`${mediaApiUrl}/media/${id}`, fetchOptions);
+  };
+
+  return {mediaArray, postMedia, deleteMedia, modifyMedia};
 };
-
 // token check from local storage, returns boolean
 const tokenInLocalStorage = () => {
   Boolean(localStorage.getItem('token'));
@@ -196,23 +202,22 @@ const useFile = () => {
   const postFile = async (file, token) => {
     const formData = new FormData();
     formData.append('file', file);
-    console.log('formData', formData);
 
     const fetchOptions = {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: 'Bearer: ' + token,
       },
       mode: 'cors',
       body: formData,
     };
 
-    const uploadResult = await fetchData(
+    return await fetchData(
       import.meta.env.VITE_UPLOAD_SERVER + '/upload',
       fetchOptions,
     );
-    return uploadResult;
   };
+
   return {postFile};
 };
 

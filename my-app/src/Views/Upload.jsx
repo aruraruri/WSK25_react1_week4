@@ -1,56 +1,41 @@
-import React, {useState} from 'react';
-import useForm from '../hooks/formHooks';
 import {useFile, useMedia} from '../hooks/apiHooks';
-import {useNavigate} from 'react-router';
 
-// Upload.jsx
+import useForm from '../hooks/formHooks';
+import {useNavigate} from 'react-router';
+import {useState} from 'react';
+
 const Upload = () => {
   const [file, setFile] = useState(null);
   const {postFile} = useFile();
   const {postMedia} = useMedia();
   const navigate = useNavigate();
 
+  const doUpload = async () => {
+    try {
+      // implement upload
+      const token = window.localStorage.getItem('token');
+
+      const fileResult = await postFile(file, token);
+      console.log('fileResult', fileResult);
+
+      const mediaResult = await postMedia(fileResult.data, inputs, token);
+      console.log('mediaResult', mediaResult);
+
+      navigate('/');
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const {inputs, handleInputChange, handleSubmit} = useForm(doUpload);
+
   const handleFileChange = (evt) => {
     if (evt.target.files) {
       console.log(evt.target.files[0]);
+      // TODO: set the file to state
       setFile(evt.target.files[0]);
     }
   };
-
-  const doUpload = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No token found');
-      if (!file) throw new Error('No file selected');
-
-      // 1. Upload the file
-      const fileResult = await postFile(file, token);
-      if (!fileResult?.data) {
-        throw new Error('File upload failed: ' + JSON.stringify(fileResult));
-      }
-
-      // 2. Create media entry
-      const mediaResult = await postMedia(
-        {
-          filename: fileResult.data.filename,
-          filesize: fileResult.data.filesize,
-          media_type: fileResult.data.media_type,
-        },
-        inputs,
-        token
-      );
-
-      if (!mediaResult) {
-        throw new Error('Media creation failed');
-      }
-
-      navigate('/');
-    } catch (e) {
-      console.error('Upload error:', e);
-      alert('Upload failed: ' + e.message);
-    }
-  };
-  const {inputs, handleInputChange, handleSubmit} = useForm(doUpload);
 
   return (
     <>
@@ -88,15 +73,12 @@ const Upload = () => {
           src={
             file
               ? URL.createObjectURL(file)
-              : 'https://placehold.co/200?text=Choose+image'
+              : 'https://placehold.co/600x400?text=Choose+image'
           }
           alt="preview"
           width="200"
         />
-        <button
-          type="submit"
-          disabled={file && inputs?.title.length > 3 ? false : true}
-        >
+        <button type="submit" disabled={!(file && inputs?.title.length > 3)}>
           Upload
         </button>
       </form>
