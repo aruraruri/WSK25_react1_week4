@@ -11,6 +11,7 @@ import Layout from './Components/Layout';
 // App.jsx
 import { UserProvider } from './contexts/UserContext';
 import ProtectedRoute from './Components/ProtectedRoute';
+import { MediaProvider } from './contexts/MediaConstext'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
       <Router basename={import.meta.env.BASE_URL}>
+      <MediaProvider>
       <UserProvider>
         <Routes>
           <Route element={<Layout />}>
@@ -36,6 +38,7 @@ function App() {
           </Route>
         </Routes>
       </UserProvider>
+      </MediaProvider>
     </Router>
     </>
   )

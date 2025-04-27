@@ -20,13 +20,34 @@ const Upload = () => {
   const doUpload = async () => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+      if (!file) throw new Error('No file selected');
+
+      // 1. Upload the file
       const fileResult = await postFile(file, token);
-      console.log('result', fileResult);
-      const mediaResult = await postMedia(fileResult.data, inputs, token);
-      console.log('mediaResult', mediaResult);
+      if (!fileResult?.data) {
+        throw new Error('File upload failed: ' + JSON.stringify(fileResult));
+      }
+
+      // 2. Create media entry
+      const mediaResult = await postMedia(
+        {
+          filename: fileResult.data.filename,
+          filesize: fileResult.data.filesize,
+          media_type: fileResult.data.media_type,
+        },
+        inputs,
+        token
+      );
+
+      if (!mediaResult) {
+        throw new Error('Media creation failed');
+      }
+
       navigate('/');
     } catch (e) {
-      console.log(e.message);
+      console.error('Upload error:', e);
+      alert('Upload failed: ' + e.message);
     }
   };
   const {inputs, handleInputChange, handleSubmit} = useForm(doUpload);
