@@ -1,3 +1,3 @@
-# WSK25_react1_week5
+# WSK25_react1_week6
 
-https://users.metropolia.fi/~aurila/WSK25/week5/forms/
+https://users.metropolia.fi/~aurila/WSK25/week6/tailwind/
