@@ -6,5 +6,5 @@ import tailwindcss from '@tailwindcss/vite';
 // trailing slash is important for the base path to work correctly
 export default defineConfig({
   plugins: [tailwindcss(), react()],
-  base: '/~aurila/WSK25/week5/tailwind/',
+  base: '/~aurila/WSK25/week6/tailwind/',
 });
